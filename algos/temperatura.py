@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import date2num, num2date
 
 
-def graf_pressao(session):
+def graf_temp(session):
     # Pegar os dados - Mudar para a plataforma
     end_dados = 'C:/SisMetEx/toydata/' + session['station'] + '/'
     arq_final = 'dados_final.csv'
@@ -37,15 +37,16 @@ def graf_pressao(session):
 
     # Plot
     figure(figsize=(6, 4), dpi=100)
-    plt.plot(dates, df_cort["Relative Pressure(hpa)"], label='Relativa')
-    plt.plot(dates, df_cort["Absolute Pressure(hpa)"],
-             label='Absoluta', linestyle='--')
+    plt.plot(dates, df_cort["Indoor Temperature(°C)"],
+             color='#1C6E98', label='Temp. Interna')
+    plt.plot(dates, df_cort["Outdoor Temperature(°C)"],
+             color='#8E4021', label='Temp. Externa', linestyle='--')
     plt.xticks(rotation=30)
 
     # Labelling
     plt.xlabel("Date")
-    plt.ylabel("Pressão (hpa)")
-    plt.title("Pressão Relativa e Absoluta - " +
+    plt.ylabel("Temperatura (°C)")
+    plt.title("Temperaturas Interna e Externa - " +
               session['station'].replace('_', ' '))
     plt.legend(loc="upper right")
     # Display

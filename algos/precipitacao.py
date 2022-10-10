@@ -6,7 +6,8 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import date2num, num2date
 
 
-def graf_pressao(session):
+# Gráfico final pro server
+def graf_prec_umid(session):
     # Pegar os dados - Mudar para a plataforma
     end_dados = 'C:/SisMetEx/toydata/' + session['station'] + '/'
     arq_final = 'dados_final.csv'
@@ -35,19 +36,25 @@ def graf_pressao(session):
 
     dates = df_cort['Date'].tolist()
 
-    # Plot
+    # Gráfico
     figure(figsize=(6, 4), dpi=100)
-    plt.plot(dates, df_cort["Relative Pressure(hpa)"], label='Relativa')
-    plt.plot(dates, df_cort["Absolute Pressure(hpa)"],
-             label='Absoluta', linestyle='--')
+    plt.plot(dates, df_cort["24 Hour Rainfall(mm)"],
+             color='green', label='Men means')
+    plt.ylabel('Precipitação diária (mm)', color="green", fontsize=14)
     plt.xticks(rotation=30)
+    axes2 = plt.twinx()
+    axes2.plot(dates, df_cort["Outdoor Humidity(%)"],
+               color='#7A90FF', label='Umidade')
+    axes2.set_ylim(0, 100)
+    axes2.set_ylabel('Umidade externa', color="#7A90FF", fontsize=14)
 
     # Labelling
     plt.xlabel("Date")
-    plt.ylabel("Pressão (hpa)")
-    plt.title("Pressão Relativa e Absoluta - " +
+    plt.title("Precipitação Diária e Umidade do Ar - " +
               session['station'].replace('_', ' '))
     plt.legend(loc="upper right")
+    plt.fill_between(
+        dates, df_cort["Outdoor Humidity(%)"], color='#A1D2FF', alpha=0.7)
     # Display
     plt.show()
     return
